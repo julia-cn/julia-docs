@@ -16,7 +16,7 @@
     - [Julia 类型转换和类型提升](/manual/conversion-and-promotion)
     - [Julia 接口](/manual/interfaces)
     - [Julia 模块](/manual/modules)
-    - [Julia 注释文档](/manual/documentation)
+    - [Julia 文档](/manual/documentation)
     - [Julia 元编程](/manual/metaprogramming)
     - [Julia 多维数组](/manual/arrays)
     - [Julia 缺省值](/manual/missing)
