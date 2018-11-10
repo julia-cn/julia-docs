@@ -82,7 +82,7 @@ on Github with a link to the gist.
 Occasionally errors occur during Julia's startup process (especially when using binary distributions,
 as opposed to compiling from source) such as the following:
 
-
+```julia
 $ julia
 exec: error -5
 ```

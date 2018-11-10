@@ -5,7 +5,7 @@
 Sequential iteration is implemented by the [`iterate`](@ref) function.
 The general `for` loop:
 
-
+```julia
 for i in iter   # or  "for i = iter"
     # body
 end
@@ -13,7 +13,7 @@ end
 
 is translated into:
 
-
+```julia
 next = iterate(iter)
 while next !== nothing
     (i, state) = next

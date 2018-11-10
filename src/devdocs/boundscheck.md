@@ -15,7 +15,7 @@ When such blocks are inlined into an `@inbounds(...)` block, the compiler may re
 The compiler removes the `@boundscheck` block *only if it is inlined* into the calling function.
 For example, you might write the method `sum` as:
 
-
+```julia
 function sum(A::AbstractArray)
     r = zero(eltype(A))
     for i = 1:length(A)
@@ -27,7 +27,7 @@ end
 
 With a custom array-like type `MyArray` having:
 
-
+```julia
 @inline getindex(A::MyArray, i::Real) = (@boundscheck checkbounds(A,i); A.data[to_index(i)])
 ```
 
@@ -68,7 +68,7 @@ allows relatively few compiled methods to serve a huge variety of array types. I
 as tuples, and are usually compared in a 1-1 fashion with individual dimensions handled by calling
 another important function, `checkindex`: typically,
 
-
+```julia
 checkbounds_indices(Bool, (IA1, IA...), (I1, I...)) = checkindex(Bool, IA1, I1) &
                                                       checkbounds_indices(Bool, IA, I)
 ```

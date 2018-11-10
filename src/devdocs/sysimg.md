@@ -20,7 +20,7 @@ Julia now ships with a script that automates the tasks of building the system im
 named `build_sysimg.jl` that lives in `DATAROOTDIR/julia/`.  That is, to include it into a current
 Julia session, type:
 
-
+```julia
 include(joinpath(Sys.BINDIR, Base.DATAROOTDIR, "julia", "build_sysimg.jl"))
 ```
 

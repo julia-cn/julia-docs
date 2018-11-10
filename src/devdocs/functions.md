@@ -52,7 +52,7 @@ tuple type, and (2) code for the body of the method. `jl_method_def` implements 
 the type of the first argument. This is much more complicated than the corresponding procedure
 during dispatch, since the argument tuple type might be abstract. For example, we can define:
 
-
+```julia
 (::Union{Foo{Int},Foo{Int8}})(x) = 0
 ```
 
@@ -71,7 +71,7 @@ created *type* is the same as the function name, with a `#` prepended. So `typeo
 A closure is simply a callable object with field names corresponding to captured variables. For
 example, the following code:
 
-
+```julia
 function adder(x)
     return y->x+y
 end
@@ -79,7 +79,7 @@ end
 
 is lowered to (roughly):
 
-
+```julia
 struct ##1{T}
     x::T
 end
@@ -134,7 +134,7 @@ compiler-generated function.
 The easiest way to understand the process is to look at how a keyword argument method definition
 is lowered. The code:
 
-
+```julia
 function circle(center, radius; color = black, fill::Bool = true, options...)
     # draw
 end
@@ -144,7 +144,7 @@ actually produces *three* method definitions. The first is a function that accep
 (including keyword arguments) as positional arguments, and includes the code for the method body.
 It has an auto-generated name:
 
-
+```julia
 function #circle#1(color, fill::Bool, options, circle, center, radius)
     # draw
 end
@@ -153,7 +153,7 @@ end
 The second method is an ordinary definition for the original `circle` function, which handles
 the case where no keyword arguments are passed:
 
-
+```julia
 function circle(center, radius)
     #circle#1(black, true, pairs(NamedTuple()), circle, center, radius)
 end
@@ -193,13 +193,13 @@ handling; everything works as if they were not part of the language at all. Call
 use keyword arguments are dispatched directly to the called function's kwsorter. For example the
 call:
 
-
+```julia
 circle((0,0), 1.0, color = red; other...)
 ```
 
 is lowered to:
 
-
+```julia
 kwfunc(circle)(merge((color = red,), other), circle, (0,0), 1.0)
 ```
 

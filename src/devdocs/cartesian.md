@@ -8,7 +8,7 @@ one of the few ways to write compact and performant multidimensional code.
 
 A simple example of usage is:
 
-
+```julia
 @nloops 3 i A begin
     s += @nref 3 A i
 end
@@ -16,7 +16,7 @@ end
 
 which generates the following code:
 
-
+```julia
 for i_3 = 1:size(A,3)
     for i_2 = 1:size(A,2)
         for i_1 = 1:size(A,1)
@@ -59,7 +59,7 @@ DocTestSetup = quote
 end
 ```
 
-```
+```jldoctest
 julia> @macroexpand @nref 2 A i
 :(A[i_1, i_2])
 ```
@@ -78,7 +78,7 @@ versions, currently you should use the `@ngenerate` macro described in [an older
 Starting in Julia 0.4-pre, the recommended approach is to use a `@generated function`.  Here's
 an example:
 
-
+```julia
 @generated function mysum(A::Array{T,N}) where {T,N}
     quote
         s = zero(T)
@@ -97,14 +97,14 @@ Naturally, you can also prepare expressions or perform calculations before the `
 Perhaps the single most powerful feature in `Cartesian` is the ability to supply anonymous-function
 expressions that get evaluated at parsing time.  Let's consider a simple example:
 
-
+```julia
 @nexprs 2 j->(i_j = 1)
 ```
 
 `@nexprs` generates `n` expressions that follow a pattern. This code would generate the following
 statements:
 
-
+```julia
 i_1 = 1
 i_2 = 1
 ```
@@ -113,14 +113,14 @@ In each generated statement, an "isolated" `j` (the variable of the anonymous fu
 by values in the range `1:2`. Generally speaking, Cartesian employs a LaTeX-like syntax.  This
 allows you to do math on the index `j`.  Here's an example computing the strides of an array:
 
-
+```julia
 s_1 = 1
 @nexprs 3 j->(s_{j+1} = s_j * size(A, j))
 ```
 
 would generate expressions
 
-
+```julia
 s_1 = 1
 s_2 = s_1 * size(A, 1)
 s_3 = s_2 * size(A, 2)

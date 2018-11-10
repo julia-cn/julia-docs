@@ -42,7 +42,7 @@ pi node. They are conceptually equivalent to the technique introduced in the pap
 "ABCD: Eliminating Array Bounds Checks on Demand" or the predicate info nodes in LLVM. To see how they work, consider,
 e.g.
 
-
+```julia
 %x::Union{Int, Float64} # %x is some Union{Int, Float64} typed ssa value
 if isa(x, Int)
     # use x
@@ -53,7 +53,7 @@ end
 
 we can perform predicate insertion and turn this into:
 
-
+```julia
 %x::Union{Int, Float64} # %x is some Union{Int, Float64} typed ssa value
 if isa(x, Int)
     %x_int = PiNode(x, Int)
@@ -110,7 +110,7 @@ variable (before SSA conversion), rather than the number of statements in the cr
 
 To see this scheme in action, consider the function
 
-
+```julia
 function foo()
     x = 1
     try

@@ -14,7 +14,7 @@ way to discover the types and values of objects being manipulated by Julia's C c
 Similarly, if you're debugging some of Julia's internals (e.g., `compiler.jl`), you can print
 `obj` using
 
-
+```julia
 ccall(:jl_, Cvoid, (Any,), obj)
 ```
 
@@ -63,7 +63,7 @@ In your `gdb` session, set a breakpoint in `jl_breakpoint` like so:
 
 Then within your Julia code, insert a call to `jl_breakpoint` by adding
 
-
+```julia
 ccall(:jl_breakpoint, Cvoid, (Any,), obj)
 ```
 

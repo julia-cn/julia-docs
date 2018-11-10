@@ -14,7 +14,7 @@ The names of `DataType` fields may be interrogated using [`fieldnames`](@ref). F
 given the following type, `fieldnames(Point)` returns a tuple of [`Symbol`](@ref)s representing
 the field names:
 
-``` struct_point
+```jldoctest struct_point
 julia> struct Point
            x::Int
            y
@@ -27,7 +27,7 @@ julia> fieldnames(Point)
 The type of each field in a `Point` object is stored in the `types` field of the `Point` variable
 itself:
 
-``` struct_point
+```jldoctest struct_point
 julia> Point.types
 svec(Int64, Any)
 ```
@@ -37,7 +37,7 @@ defaults to the `Any` type.
 
 Types are themselves represented as a structure called `DataType`:
 
-``` struct_point
+```jldoctest struct_point
 julia> typeof(Point)
 DataType
 ```
@@ -50,7 +50,7 @@ of these fields is the `types` field observed in the example above.
 The *direct* subtypes of any `DataType` may be listed using [`subtypes`](@ref). For example,
 the abstract `DataType` [`AbstractFloat`](@ref) has four (concrete) subtypes:
 
-```; setup = :(using InteractiveUtils)
+```jldoctest; setup = :(using InteractiveUtils)
 julia> subtypes(AbstractFloat)
 4-element Array{Any,1}:
  BigFloat
@@ -81,7 +81,7 @@ the unquoted and interpolated expression (`Expr`) form for a given macro. To use
 `quote` the expression block itself (otherwise, the macro will be evaluated and the result will
 be passed instead!). For example:
 
-```; setup = :(using InteractiveUtils)
+```jldoctest; setup = :(using InteractiveUtils)
 julia> macroexpand(@__MODULE__, :(@edit println("")) )
 :((InteractiveUtils.edit)(println, (Base.typesof)("")))
 ```
@@ -93,7 +93,7 @@ Finally, the [`Meta.lower`](@ref) function gives the `lowered` form of any expre
 particular interest for understanding how language constructs map to primitive operations such
 as assignments, branches, and calls:
 
-```
+```jldoctest
 julia> Meta.lower(@__MODULE__, :([1+2, sin(0.5)]) )
 :($(Expr(:thunk, CodeInfo(
  1 ─ %1 = 1 + 2
@@ -119,7 +119,7 @@ generation for any function which has not previously been called).
 For convenience, there are macro versions of the above functions which take standard function
 calls and expand argument types automatically:
 
-```
+```julia-repl
 julia> @code_llvm +(1,1)
 
 ; Function Attrs: sspreq

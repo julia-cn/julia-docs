@@ -3,7 +3,7 @@
 Type `VecElement{T}` is intended for building libraries of SIMD operations. Practical use of it
 requires using `llvmcall`. The type is defined as:
 
-
+```julia
 struct VecElement{T}
     value::T
 end
@@ -16,7 +16,7 @@ At `-O3`, the compiler *might* automatically vectorize operations on such tuples
 the following program, when compiled with `julia -O3` generates two SIMD addition instructions
 (`addps`) on x86 systems:
 
-
+```julia
 const m128 = NTuple{4,VecElement{Float32}}
 
 function add(a::m128, b::m128)

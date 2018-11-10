@@ -23,7 +23,7 @@ Julia's types support the standard operations of set theory: you can ask whether
 (subtype) of `T2` with `T1 <: T2`. Likewise, you intersect two types using `typeintersect`, take
 their union with `Union`, and compute a type that contains their union with `typejoin`:
 
-```
+```jldoctest
 julia> typeintersect(Int, Float64)
 Union{}
 
@@ -75,7 +75,7 @@ of type `TypeVar`), and a wrapped type (`Array{T,2}` in this example).
 
 Consider the following methods:
 
-
+```julia
 f1(A::Array) = 1
 f2(A::Array{Int}) = 2
 f3(A::Array{T}) where {T<:Any} = 3
@@ -87,7 +87,7 @@ All but `f4` can be called with `a = [1,2]`; all but `f2` can be called with `b 
 
 Let's look at these types a little more closely:
 
-```
+```jldoctest
 julia> dump(Array)
 UnionAll
   var: TypeVar
@@ -116,7 +116,7 @@ distinguished. However, by convention they should not be mutated.
 
 One can construct `TypeVar`s manually:
 
-```
+```jldoctest
 julia> TypeVar(:V, Signed, Real)
 Signed<:V<:Real
 ```
@@ -126,7 +126,7 @@ symbol.
 
 The syntax `Array{T} where T<:Integer` is lowered to
 
-
+```julia
 let T = TypeVar(:T,Integer)
     UnionAll(T, Array{T})
 end
@@ -155,7 +155,7 @@ which it returns true will not give meaningful answers in subtyping and other ty
 
 The following two [`Array`](@ref) types are functionally equivalent, yet print differently:
 
-```
+```jldoctest
 julia> TV, NV = TypeVar(:T), TypeVar(:N)
 (T, N)
 
@@ -169,7 +169,7 @@ Array{T,N}
 These can be distinguished by examining the `name` field of the type, which is an object of type
 `TypeName`:
 
-```
+```julia-repl
 julia> dump(Array{Int,1}.name)
 TypeName
   name: Symbol Array
@@ -207,7 +207,7 @@ TypeName
 In this case, the relevant field is `wrapper`, which holds a reference to the top-level type used
 to make new `Array` types.
 
-```
+```julia-repl
 julia> pointer_from_objref(Array)
 Ptr{Cvoid} @0x00007fcc7de64850
 
@@ -228,7 +228,7 @@ What about the other fields? `hash` assigns an integer to each type.  To examine
 field, it's helpful to pick a type that is less heavily used than Array. Let's first create our
 own type:
 
-```
+```jldoctest
 julia> struct MyType{T,N} end
 
 julia> MyType{Int,2}
@@ -250,7 +250,7 @@ instances containing free type variables are not cached.
 Tuple types constitute an interesting special case.  For dispatch to work on declarations like
 `x::Tuple`, the type has to be able to accommodate any tuple.  Let's check the parameters:
 
-```
+```jldoctest
 julia> Tuple
 Tuple
 
@@ -261,7 +261,7 @@ svec(Vararg{Any,N} where N)
 Unlike other types, tuple types are covariant in their parameters, so this definition permits
 `Tuple` to match any type of tuple:
 
-```
+```jldoctest
 julia> typeintersect(Tuple, Tuple{Int,Float64})
 Tuple{Int64,Float64}
 
@@ -272,7 +272,7 @@ Tuple{Int64,Float64}
 However, if a variadic (`Vararg`) tuple type has free variables it can describe different kinds
 of tuples:
 
-```
+```jldoctest
 julia> typeintersect(Tuple{Vararg{T} where T}, Tuple{Int,Float64})
 Tuple{Int64,Float64}
 
@@ -286,7 +286,7 @@ Therefore a heterogeneous tuple does not match.
 
 Finally, it's worth noting that `Tuple{}` is distinct:
 
-```
+```jldoctest
 julia> Tuple{}
 Tuple{}
 
@@ -299,7 +299,7 @@ Union{}
 
 What is the "primary" tuple-type?
 
-```
+```julia-repl
 julia> pointer_from_objref(Tuple)
 Ptr{Cvoid} @0x00007f5998a04370
 
@@ -320,7 +320,7 @@ so `Tuple == Tuple{Vararg{Any}}` is indeed the primary type.
 Consider the type `Tuple{T,T} where T`.
 A method with this signature would look like:
 
-
+```julia
 f(x::T, y::T) where {T} = ...
 ```
 
@@ -359,7 +359,7 @@ However, `Tuple{Real}` *is* a subtype of `Tuple{T} where T`, because in that cas
 
 Next consider a signature like the following:
 
-
+```julia
 f(a::Array{T}, x::T, y::T) where {T} = ...
 ```
 
@@ -373,7 +373,7 @@ So variables that occur in invariant position are never considered diagonal.
 This choice of behavior is slightly controversial --- some feel this definition
 should be written as
 
-
+```julia
 f(a::Array{T}, x::S, y::S) where {T, S<:T} = ...
 ```
 
@@ -383,7 +383,7 @@ the type of `y` if `x` and `y` can have different types.
 
 The next complication is the interaction of unions and diagonal variables, e.g.
 
-
+```julia
 f(x::Union{Nothing,T}, y::T) where {T} = ...
 ```
 
@@ -391,7 +391,7 @@ Consider what this declaration means.
 `y` has type `T`. `x` then can have either the same type `T`, or else be of type `Nothing`.
 So all of the following calls should match:
 
-
+```julia
 f(1, 1)
 f("", "")
 f(2.0, 2.0)
@@ -410,7 +410,7 @@ When `x` has type `Nothing`, we don't need to use the `T` in `Union{Nothing,T}`,
 does not "occur".
 Indeed, we have the following type equivalence:
 
-
+```julia
 (Tuple{Union{Nothing,T},T} where T) == Union{Tuple{Nothing,Any}, Tuple{T,T} where T}
 ```
 
@@ -461,7 +461,7 @@ Build Julia with `make debug` and fire up Julia within a debugger.
 Because the subtyping code is used heavily in the REPL itself--and hence breakpoints in this
 code get triggered often--it will be easiest if you make the following definition:
 
-```
+```julia-repl
 julia> function mysubtype(a,b)
            ccall(:jl_breakpoint, Cvoid, (Any,), nothing)
            a <: b
@@ -473,13 +473,13 @@ breakpoints in other functions.
 
 As a warm-up, try the following:
 
-
+```julia
 mysubtype(Tuple{Int,Float64}, Tuple{Integer,Real})
 ```
 
 We can make it more interesting by trying a more complex case:
 
-
+```julia
 mysubtype(Tuple{Array{Int,2}, Int8}, Tuple{Array{T}, T} where T)
 ```
 
@@ -500,7 +500,7 @@ considered more specific. However, `morespecific` does get a bonus for length: i
 
 If you're debugging how methods get sorted, it can be convenient to define the function:
 
-
+```julia
 type_morespecific(a, b) = ccall(:jl_type_morespecific, Cint, (Any,Any), a, b)
 ```
 

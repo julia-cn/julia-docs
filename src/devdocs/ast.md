@@ -351,7 +351,7 @@ For example `(call f x)` corresponds to `Expr(:call, :f, :x)` in Julia.
 
 `do` syntax:
 
-
+```julia
 f(x) do a,b
     body
 end
@@ -423,7 +423,7 @@ call. Finally, chains of comparisons have their own special expression structure
 
 Doc string syntax:
 
-
+```julia
 "some docs"
 f(x) = x
 ```
@@ -459,7 +459,7 @@ A block of statements is parsed as `(block stmt1 stmt2 ...)`.
 
 If statement:
 
-
+```julia
 if a
     b
 elseif c
@@ -489,7 +489,7 @@ like `for` loops.
 
 A basic function definition is parsed as `(function (call f x) body)`. A more complex example:
 
-
+```julia
 function f(x::T; k = 1) where T
     return x+1
 end
@@ -506,7 +506,7 @@ parses as:
 
 Type definition:
 
-
+```julia
 mutable struct Foo{T<:S}
     x::T
 end

@@ -1,4 +1,4 @@
-# Strings
+# [Strings](@id lib-strings)
 
 ```@docs
 Core.AbstractChar

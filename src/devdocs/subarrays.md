@@ -39,7 +39,7 @@ Consider making 2d slices of a 3d array:
 ```@meta
 DocTestSetup = :(import Random; Random.seed!(1234))
 ```
-``` subarray
+```jldoctest subarray
 julia> A = rand(2,3,4);
 
 julia> S1 = view(A, :, 1, 2:3)
@@ -71,7 +71,7 @@ any runtime overhead.
 
 The strategy adopted is first and foremost expressed in the definition of the type:
 
-
+```julia
 struct SubArray{T,N,P,I,L} <: AbstractArray{T,N}
     parent::P
     indices::I
@@ -92,7 +92,7 @@ If in our example above `A` is a `Array{Float64, 3}`, our `S1` case above would 
 Note in particular the tuple parameter, which stores the types of the indices used to create
 `S1`. Likewise,
 
-``` subarray
+```jldoctest subarray
 julia> S1.indices
 (Base.Slice(Base.OneTo(2)), 1, 2:3)
 ```
@@ -107,7 +107,7 @@ types.  For example, for `S1`, one needs to apply the `i,j` indices to the first
 of the parent array, whereas for `S2` one needs to apply them to the second and third.  The simplest
 approach to indexing would be to do the type-analysis at runtime:
 
-
+```julia
 parentindices = Vector{Any}()
 for thisindex in S.indices
     ...
@@ -135,7 +135,7 @@ what `reindex` does: it dispatches on the type of the first stored index and con
 number of input indices, and then it recurses on the remaining indices. In the case of `S1`, this
 expands to
 
-
+```julia
 Base.reindex(S1, S1.indices, (i, j)) == (i, S1.indices[2], S1.indices[3][j])
 ```
 
@@ -155,7 +155,7 @@ For `SubArray` types, the availability of efficient linear indexing is based pur
 of the indices, and does not depend on values like the size of the parent array. You can ask whether
 a given set of indices supports fast linear indexing with the internal `Base.viewindexing` function:
 
-``` subarray
+```jldoctest subarray
 julia> Base.viewindexing(S1.indices)
 IndexCartesian()
 
@@ -170,7 +170,7 @@ we can define dispatch directly on `SubArray{T,N,A,I,true}` without any intermed
 Since this computation doesn't depend on runtime values, it can miss some cases in which the stride
 happens to be uniform:
 
-```
+```jldoctest
 julia> A = reshape(1:4*2, 4, 2)
 4×2 reshape(::UnitRange{Int64}, 4, 2) with eltype Int64:
  1  5
@@ -189,7 +189,7 @@ A view constructed as `view(A, 2:2:4, :)` happens to have uniform stride, and th
 indexing indeed could be performed efficiently.  However, success in this case depends on the
 size of the array: if the first dimension instead were odd,
 
-```
+```jldoctest
 julia> A = reshape(1:5*2, 5, 2)
 5×2 reshape(::UnitRange{Int64}, 5, 2) with eltype Int64:
  1   6
@@ -224,7 +224,7 @@ then `A[2:2:4,:]` does not have uniform stride, so we cannot guarantee efficient
     What might be less obvious is that the dimensionality of the stored parent array must be equal
     to the number of effective indices in the `indices` tuple. Some examples:
 
-    
+    ```julia
     A = reshape(1:35, 5, 7) # A 2d parent Array
     S = view(A, 2:7)         # A 1d view created by linear indexing
     S = view(A, :, :, 1:1)   # Appending extra indices is supported
@@ -248,13 +248,13 @@ then `A[2:2:4,:]` does not have uniform stride, so we cannot guarantee efficient
     you can see that the expansion is incorrect for `i, j = CartesianIndex(), CartesianIndex(2,1)`.
     It should *skip* the `CartesianIndex()` entirely and return:
 
-    
+    ```julia
     (CartesianIndex(2,1)[1], S1.indices[2], S1.indices[3][CartesianIndex(2,1)[2]])
     ```
 
     Instead, though, we get:
 
-    
+    ```julia
     (CartesianIndex(), S1.indices[2], S1.indices[3][CartesianIndex(2,1)])
     ```
 

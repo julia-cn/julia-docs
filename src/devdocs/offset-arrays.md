@@ -14,7 +14,7 @@ on conventional arrays, should function essentially without alteration as long a
 the exported interfaces of Julia.
 If you find it more convenient to just force your users to supply traditional arrays where indexing starts at one, you can add
 
-
+```julia
 @assert !Base.has_offset_axes(arrays...)
 ```
 
@@ -39,7 +39,7 @@ frustrating bugs would be incorrect results or segfaults (total crashes of Julia
 For example,
 consider the following function:
 
-
+```julia
 function mycopy!(dest::AbstractVector, src::AbstractVector)
     length(dest) == length(src) || throw(DimensionMismatch("vectors must match"))
     # OK, now we're safe to use @inbounds, right? (not anymore!)
@@ -80,7 +80,7 @@ By this definition, 1-dimensional arrays always use Cartesian indexing with the 
 
 Using `axes` and `LinearIndices`, here is one way you could rewrite `mycopy!`:
 
-
+```julia
 function mycopy!(dest::AbstractVector, src::AbstractVector)
     axes(dest) == axes(src) || throw(DimensionMismatch("vectors must match"))
     for i in LinearIndices(src)
@@ -136,7 +136,7 @@ can sometimes be used to avoid the need to write your own `ZeroRange` type.
 
 Once you have your `AbstractUnitRange` type, then specialize `axes`:
 
-
+```julia
 Base.axes(A::ZeroArray) = map(n->ZeroRange(n), A.size)
 ```
 
@@ -145,7 +145,7 @@ implement this).
 
 In some cases, the fallback definition for `axes(A, d)`:
 
-
+```julia
 axes(A::AbstractArray{T,N}, d) where {T,N} = d <= N ? axes(A)[d] : OneTo(1)
 ```
 
@@ -154,7 +154,7 @@ when `d > ndims(A)`.  Likewise, in `Base` there is a dedicated function `indices
 to `axes(A, 1)` but which avoids checking (at runtime) whether `ndims(A) > 0`. (This is purely
 a performance optimization.)  It is defined as:
 
-
+```julia
 indices1(A::AbstractArray{T,0}) where {T} = OneTo(1)
 indices1(A::AbstractArray) = axes(A)[1]
 ```
@@ -167,7 +167,7 @@ sure to specialize it appropriately.
 Given your custom `ZeroRange` type, then you should also add the following two specializations
 for `similar`:
 
-
+```julia
 function Base.similar(A::AbstractArray, T::Type, shape::Tuple{ZeroRange,Vararg{ZeroRange}})
     # body
 end
@@ -193,7 +193,7 @@ and you can `reshape` an array so that the result has custom indices.
 
 `has_offset_axes` depends on having `axes` defined for the objects you call it on. If there is
 some reason you don't have an `axes` method defined for your object, consider defining a method
-
+```julia
 Base.has_offset_axes(obj::MyNon1IndexedArraylikeObject) = true
 ```
 This will allow code that assumes 1-based indexing to detect a problem

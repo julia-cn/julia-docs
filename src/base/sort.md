@@ -3,7 +3,7 @@
 Julia has an extensive, flexible API for sorting and interacting with already-sorted arrays of
 values. By default, Julia picks reasonable algorithms and sorts in standard ascending order:
 
-```
+```jldoctest
 julia> sort([2,3,1])
 3-element Array{Int64,1}:
  1
@@ -13,7 +13,7 @@ julia> sort([2,3,1])
 
 You can easily sort in reverse order as well:
 
-```
+```jldoctest
 julia> sort([2,3,1], rev=true)
 3-element Array{Int64,1}:
  3
@@ -23,7 +23,7 @@ julia> sort([2,3,1], rev=true)
 
 To sort an array in-place, use the "bang" version of the sort function:
 
-```
+```jldoctest
 julia> a = [2,3,1];
 
 julia> sort!(a);
@@ -38,7 +38,7 @@ julia> a
 Instead of directly sorting an array, you can compute a permutation of the array's indices that
 puts the array into sorted order:
 
-```
+```julia-repl
 julia> v = randn(5)
 5-element Array{Float64,1}:
   0.297288
@@ -66,7 +66,7 @@ julia> v[p]
 
 Arrays can easily be sorted according to an arbitrary transformation of their values:
 
-```
+```julia-repl
 julia> sort(v, by=abs)
 5-element Array{Float64,1}:
  -0.0104452
@@ -78,7 +78,7 @@ julia> sort(v, by=abs)
 
 Or in reverse order by a transformation:
 
-```
+```julia-repl
 julia> sort(v, by=abs, rev=true)
 5-element Array{Float64,1}:
  -0.839027
@@ -90,7 +90,7 @@ julia> sort(v, by=abs, rev=true)
 
 If needed, the sorting algorithm can be chosen:
 
-```
+```julia-repl
 julia> sort(v, alg=InsertionSort)
 5-element Array{Float64,1}:
  -0.839027
@@ -151,7 +151,7 @@ integers and floats.
 `PartialQuickSort(k)` is similar to `QuickSort`, but the output array is only sorted up to index
 `k` if `k` is an integer, or in the range of `k` if `k` is an `OrdinalRange`. For example:
 
-
+```julia
 x = rand(1:500, 100)
 k = 50
 k2 = 50:100
@@ -179,7 +179,7 @@ The mechanism by which Julia picks default sorting algorithms is implemented via
 function. It allows a particular algorithm to be registered as the default in all sorting functions
 for specific arrays. For example, here are the two default methods from [`sort.jl`](https://github.com/JuliaLang/julia/blob/master/base/sort.jl):
 
-
+```julia
 defalg(v::AbstractArray) = MergeSort
 defalg(v::AbstractArray{<:Number}) = QuickSort
 ```

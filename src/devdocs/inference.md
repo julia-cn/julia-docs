@@ -20,7 +20,7 @@ development than if you rebuild Julia for each change.
 A convenient entry point into inference is `typeinf_code`. Here's a
 demo running inference on `convert(Int, UInt(1))`:
 
-
+```julia
 # Get the method
 atypes = Tuple{Type{Int}, UInt}  # argument types
 mths = methods(convert, atypes)  # worth checking that there is only one
@@ -38,7 +38,7 @@ Core.Compiler.typeinf_code(m, atypes, sparams, optimize, cached, params)
 If your debugging adventures require a `MethodInstance`, you can look it up by
 calling `Core.Compiler.code_for_method` using many of the variables above.
 A `CodeInfo` object may be obtained with
-
+```julia
 # Returns the CodeInfo object for `convert(Int, ::UInt)`:
 ci = (@code_typed convert(Int, UInt(1)))[1]
 ```
@@ -93,7 +93,7 @@ Each statement gets analyzed for its total cost in a function called
 `statement_cost`. You can run this yourself by following the sketch below,
 where `f` is your function and `tt` is the Tuple-type of the arguments:
 
-```
+```jldoctest
 # A demo on `fill(3.5, (2, 3))
 f = fill
 tt = Tuple{Float64, Tuple{Int,Int}}

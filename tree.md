@@ -26,6 +26,7 @@
     - [Julia 调用C和Fortran代码](/manual/calling-c-and-fortran-code)
     - [Julia 跨平台处理](/manual/handling-operating-system-variation)
     - [Julia 环境变量](/manual/environment-variables)
+    - [Julia 嵌入式](/manual/embedding)
     - [Julia 代码加载](/manual/code-loading)
     - [Julia 剖析](/manual/profile)
     - [Julia 堆栈跟踪](/manual/stacktraces)

@@ -93,7 +93,7 @@ process (e.g. because it creates unserializable state). However, the resulting
 
 It is also possible to dump an LLVM IR module for just one Julia function,
 using:
-
+```julia
 f, T = +, Tuple{Int,Int} # Substitute your function of interest here
 optimize = false
 open("plus.ll", "w") do f
@@ -152,7 +152,7 @@ required GC roots and GC root store operations (since LLVM doesn't understand
 our GC, it wouldn't otherwise know what it is and is not allowed to do with
 values stored to the GC frame, so it'll conservatively do very little). As an
 example, consider an error path
-
+```julia
 if some_condition()
     #= Use some variables maybe =#
     error("An error occurred")
@@ -267,7 +267,7 @@ space 0 and then decaying to the appropriate address space afterwards.
 One important aspect missing from the discussion so far is the handling of
 [`ccall`](@ref). [`ccall`](@ref) has the peculiar feature that the location and
 scope of a use do not coincide. As an example consider:
-
+```julia
 A = randn(1024)
 ccall(:foo, Cvoid, (Ptr{Float64},), A)
 ```
@@ -276,7 +276,7 @@ pointer which drops the reference to the array value. However, we of course
 need to make sure that the array does stay alive while we're doing the
 [`ccall`](@ref). To understand how this is done, first recall the lowering of the
 above code:
-
+```julia
 return $(Expr(:foreigncall, :(:foo), Cvoid, svec(Ptr{Float64}), :(:ccall), 1, :($(Expr(:foreigncall, :(:jl_array_ptr), Ptr{Float64}, svec(Any), :(:ccall), 1, :(A)))), :(A)))
 ```
 The last `:(A)`, is an extra argument list inserted during lowering that informs
