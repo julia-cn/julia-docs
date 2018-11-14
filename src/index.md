@@ -8,7 +8,14 @@
 
 发起人邮箱：l@numpy.org.cn
 发起人微信号：iamnotahacker
-QQ交流群：294639068
+
+## 兄弟文档
+
+文档名称 | 备注 
+---|---
+[NumPy中文文档](https://www.numpy.org.cn/) | NumPy中文文档
+[Matplotlib中文文档](https://www.matplotlib.org.cn/) | Matplotlib中文文档
+[Pandas中文文档](https://www.pypandas.cn/) | Pandas中文文档
 
 ## 贡献翻译
 
