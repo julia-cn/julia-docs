@@ -1,4 +1,4 @@
-# Integers and Floating-Point Numbers
+# Julia 整数和浮点数
 
 整数和浮点值是算术和计算的基础。这些数值的内置表示被称作原始数值类型（numeric primitive），且整数和浮点数在代码中作为立即数时称作数值字面量（numeric literal）。例如，``1`` 是个整型字面量，``1.0`` 是个浮点型字面量，它们在内存中作为对象的二进制表示就是原始数值类型。
 
