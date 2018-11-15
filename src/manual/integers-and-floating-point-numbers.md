@@ -1,40 +1,40 @@
 # Integers and Floating-Point Numbers
 
-Integers and floating-point values are the basic building blocks of arithmetic and computation. Built-in representations of such values are called numeric primitives, while representations of integers and floating-point numbers as immediate values in code are known as numeric literals. For example, `1` is an integer literal, while `1.0` is a floating-point literal; their binary in-memory representations as objects are numeric primitives.
+整数和浮点值是算术和计算的基础。这些数值的内置表示被称作原始数值类型（numeric primitive），且整数和浮点数在代码中作为立即数时称作数值字面量（numeric literal）。例如，``1`` 是个整型字面量，``1.0`` 是个浮点型字面量，它们在内存中作为对象的二进制表示就是原始数值类型。
 
-Julia provides a broad range of primitive numeric types, and a full complement of arithmetic and bitwise operators as well as standard mathematical functions are defined over them. These map directly onto numeric types and operations that are natively supported on modern computers, thus allowing Julia to take full advantage of computational resources. Additionally, Julia provides software support for [Arbitrary Precision Arithmetic](@ref), which can handle operations on numeric values that cannot be represented effectively in native hardware representations, but at the cost of relatively slower performance.
+Julia 提供了很丰富的原始数值类型，并基于它们定义了一整套算术操作，还提供按位运算符以及一些标准数学函数。这些函数能够直接映射到现代计算机原生支持的数值类型及运算上，因此 Julia 可以充分地利用运算资源。此外，Julia 还为[任意精度算术](#)，对于无法使用原生硬件表示的数值类型，Julia 也能够高效地处理其数值运算。当然，这需要相对的牺牲一些性能。
 
-The following are Julia's primitive numeric types:
+以下是 Julia 的原始数值类型：
 
-  * **Integer types:**
+  * **整数类型：**
 
-| Type              | Signed? | Number of bits | Smallest value | Largest value |
+| 类型              | 是否带符号? | 比特位数 | 最小值 | 最大值 |
 |:----------------- |:------- |:-------------- |:-------------- |:------------- |
-| [`Int8`](@ref)    | ✓       | 8              | -2^7           | 2^7 - 1       |
-| [`UInt8`](@ref)   |         | 8              | 0              | 2^8 - 1       |
-| [`Int16`](@ref)   | ✓       | 16             | -2^15          | 2^15 - 1      |
-| [`UInt16`](@ref)  |         | 16             | 0              | 2^16 - 1      |
-| [`Int32`](@ref)   | ✓       | 32             | -2^31          | 2^31 - 1      |
-| [`UInt32`](@ref)  |         | 32             | 0              | 2^32 - 1      |
-| [`Int64`](@ref)   | ✓       | 64             | -2^63          | 2^63 - 1      |
-| [`UInt64`](@ref)  |         | 64             | 0              | 2^64 - 1      |
-| [`Int128`](@ref)  | ✓       | 128            | -2^127         | 2^127 - 1     |
-| [`UInt128`](@ref) |         | 128            | 0              | 2^128 - 1     |
-| [`Bool`](@ref)    | N/A     | 8              | `false` (0)    | `true` (1)    |
+| [`Int8`](#)    | ✓       | 8              | -2^7           | 2^7 - 1       |
+| [`UInt8`](#)   |         | 8              | 0              | 2^8 - 1       |
+| [`Int16`](#)   | ✓       | 16             | -2^15          | 2^15 - 1      |
+| [`UInt16`](#)  |         | 16             | 0              | 2^16 - 1      |
+| [`Int32`](#)   | ✓       | 32             | -2^31          | 2^31 - 1      |
+| [`UInt32`](#)  |         | 32             | 0              | 2^32 - 1      |
+| [`Int64`](#)   | ✓       | 64             | -2^63          | 2^63 - 1      |
+| [`UInt64`](#)  |         | 64             | 0              | 2^64 - 1      |
+| [`Int128`](#)  | ✓       | 128            | -2^127         | 2^127 - 1     |
+| [`UInt128`](#) |         | 128            | 0              | 2^128 - 1     |
+| [`Bool`](#)    | N/A     | 8              | `false` (0)    | `true` (1)    |
 
-  * **Floating-point types:**
+  * **浮点类型：**
 
-| Type              | Precision                                                                      | Number of bits |
+| 类型              | 精度                                                                      | 比特位数 |
 |:----------------- |:------------------------------------------------------------------------------ |:-------------- |
-| [`Float16`](@ref) | [half](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)     | 16             |
-| [`Float32`](@ref) | [single](https://en.wikipedia.org/wiki/Single_precision_floating-point_format) | 32             |
-| [`Float64`](@ref) | [double](https://en.wikipedia.org/wiki/Double_precision_floating-point_format) | 64             |
+| [`Float16`](#) | [half](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)     | 16             |
+| [`Float32`](#) | [single](https://en.wikipedia.org/wiki/Single_precision_floating-point_format) | 32             |
+| [`Float64`](#) | [double](https://en.wikipedia.org/wiki/Double_precision_floating-point_format) | 64             |
 
-Additionally, full support for [Complex and Rational Numbers](@ref) is built on top of these primitive numeric types. All numeric types interoperate naturally without explicit casting, thanks to a flexible, user-extensible [type promotion system](@ref conversion-and-promotion).
+此外，对[复数和分数](https://docs.julialang.org/en/v1/manual/complex-and-rational-numbers/#Complex-and-Rational-Numbers-1)的完整支持是在这些原始数据类型之上建立起来的。多亏了 Julia 有一个很灵活的、用户可扩展的[类型提升系统](https://docs.julialang.org/en/v1/manual/conversion-and-promotion/#conversion-and-promotion-1)，所有的数值类型都无需显式转换就可以很自然地相互进行运算。
 
-## Integers
+## 整型
 
-Literal integers are represented in the standard manner:
+整数字面量以标准形式表示：
 
 ```
 julia> 1
@@ -44,7 +44,7 @@ julia> 1234
 1234
 ```
 
-The default type for an integer literal depends on whether the target system has a 32-bit architecture or a 64-bit architecture:
+整数文字的默认类型取决于目标系统是32位架构还是64位架构：
 
 ```
 # 32-bit system:
@@ -56,7 +56,7 @@ julia> typeof(1)
 Int64
 ```
 
-The Julia internal variable [`Sys.WORD_SIZE`](@ref) indicates whether the target system is 32-bit or 64-bit:
+Julia内部变量 [`Sys.WORD_SIZE`](#) 表示目标系统是32位还是64位：
 
 ```
 # 32-bit system:
@@ -68,7 +68,7 @@ julia> Sys.WORD_SIZE
 64
 ```
 
-Julia also defines the types `Int` and `UInt`, which are aliases for the system's signed and unsigned native integer types respectively:
+Julia还定义了类型 ``Int`` 和 ``UInt``，它们分别是系统的有符号和无符号本机整数类型的别名：
 
 ```
 # 32-bit system:
@@ -84,7 +84,7 @@ julia> UInt
 UInt64
 ```
 
-Larger integer literals that cannot be represented using only 32 bits but can be represented in 64 bits always create 64-bit integers, regardless of the system type:
+无论系统类型如何，无法仅使用32位表示但可以64位表示的较大整数文字始终会创建64位整数：
 
 ```
 # 32-bit or 64-bit system:
@@ -92,7 +92,7 @@ julia> typeof(3000000000)
 Int64
 ```
 
-Unsigned integers are input and output using the `0x` prefix and hexadecimal (base 16) digits `0-9a-f` (the capitalized digits `A-F` also work for input). The size of the unsigned value is determined by the number of hex digits used:
+无符号整数会通过 ``0x`` 前缀以及十六进制数 ``0-9a-f`` 来输入和输出（输入也可以使用大写的 ``A-F``）。无符号值的位数取决于十六进制数字使用的数量：
 
 ```
 julia> 0x1
@@ -126,11 +126,11 @@ julia> typeof(ans)
 UInt128
 ```
 
-This behavior is based on the observation that when one uses unsigned hex literals for integer values, one typically is using them to represent a fixed numeric byte sequence, rather than just an integer value.
+采用这种做法是因为，当人们使用无符号十六进制字面量表示整数值的时候，通常会用它们来表示一个固定的数值字节序列，而不仅仅是个整数值。
 
-Recall that the variable [`ans`](@ref) is set to the value of the last expression evaluated in an interactive session. This does not occur when Julia code is run in other ways.
+还记得这个 [`ans`](#) 变量吗？它存着交互式会话中上一个表达式的运算结果，但以其他方式运行的 Julia 代码中没有这个变量。
 
-Binary and octal literals are also supported:
+二进制和八进制字面量也是支持的：
 
 ```
 julia> 0b10
@@ -152,9 +152,9 @@ julia> typeof(ans)
 UInt128
 ```
 
-As for hexadecimal literals, binary and octal literals produce unsigned integer types. The size of the binary data item is the minimal needed size, if the leading digit of the literal is not `0`. In the case of leading zeros, the size is determined by the minimal needed size for a literal, which has the same length but leading digit `1`. That allows the user to control the size. Values which cannot be stored in `UInt128` cannot be written as such literals.
+二进制、八进制和十六进制的字面量都会产生无符号的整数类型。当字面量不是开头全是 ``0`` 时，它们二进制数据项的位数会是最少需要的位数。当开头都是 0 时，位数取决于一个字面量需要的最少位数，这里的字面量指的是一个有着同样长度但开头都为 ``1`` 的数。这样用户就可以控制位数了。那些无法使用 ``UInt128`` 类型存储下的值无法写成这样的字面量。
 
-Binary, octal, and hexadecimal literals may be signed by a `-` immediately preceding the unsigned literal. They produce an unsigned integer of the same size as the unsigned literal would do, with the two's complement of the value:
+二进制、八进制和十六进制的字面量可以在前面紧接着加一个负号 ``-``，这样可以产生一个和原字面量有着同样位数而值为原数的补码的数（二补数）：
 
 ```
 julia> -0x2
@@ -164,7 +164,7 @@ julia> -0x0002
 0xfffe
 ```
 
-The minimum and maximum representable values of primitive numeric types such as integers are given by the [`typemin`](@ref) and [`typemax`](@ref) functions:
+整型等原始数值类型的最小和最大可表示的值可用 [`typemin`](#) 和 [`typemax`](#) 函数得到：
 
 ```
 julia> (typemin(Int32), typemax(Int32))
@@ -185,14 +185,11 @@ julia> for T in [Int8,Int16,Int32,Int64,Int128,UInt8,UInt16,UInt32,UInt64,UInt12
 UInt128: [0,340282366920938463463374607431768211455]
 ```
 
-The values returned by [`typemin`](@ref) and [`typemax`](@ref) are always of the given argument
-type. (The above expression uses several features that have yet to be introduced, including [for loops](@ref man-loops),
-[Strings](@ref man-strings), and [Interpolation](@ref), but should be easy enough to understand for users
-with some existing programming experience.)
+[`typemin`](#) 和 [`typemax`](#) 返回的值的类型总与所给参数的类型相同。（上面的表达式用了一些我们目前还没有介绍的功能，包括 [for 循环](#)、[字符串](#)和[插值](#)，但对于已有一些编程经验的用户应该是很容易理解的。）
 
-### Overflow behavior
+### 溢出行为
 
-In Julia, exceeding the maximum representable value of a given type results in a wraparound behavior:
+在Julia中，超出给定类型的最大可表示值会导致环绕行为：
 
 ```
 julia> x = typemax(Int64)
@@ -205,13 +202,13 @@ julia> x + 1 == typemin(Int64)
 true
 ```
 
-Thus, arithmetic with Julia integers is actually a form of [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic). This reflects the characteristics of the underlying arithmetic of integers as implemented on modern computers. In applications where overflow is possible, explicit checking for wraparound produced by overflow is essential; otherwise, the [`BigInt`](@ref) type in [Arbitrary Precision Arithmetic](@ref) is recommended instead.
+因此，Julia 的整数算术实际上是[模算数](https://en.wikipedia.org/wiki/Modular_arithmetic)的一种形式，它反映了现代计算机实现底层算术的特点。在可能有溢出产生的程序中，对最值边界出现循环进行显式检查是必要的。否则，推荐使用[任意精度算术](#)中的 [``BigInt``](#) 类型作为替代。
 
-### Division errors
+### 语法错误
 
-Integer division (the `div` function) has two exceptional cases: dividing by zero, and dividing the lowest negative number ([`typemin`](@ref)) by -1. Both of these cases throw a [`DivideError`](@ref). The remainder and modulus functions (`rem` and `mod`) throw a [`DivideError`](@ref) when their second argument is zero.
+``div`` 函数的整数除法有两种异常情况：除以零，以及使用 -1 去除最小的负数（[typemin](#)）。这两种情况都会抛出一个 [``DivideError``](#) 错误。 ``rem`` 取余函数和 ``mod`` 取模函数在除零时抛出 [``DivideError``](#) 错误。
 
-## Floating-Point Numbers
+## 浮点数
 
 Literal floating-point numbers are represented in the standard formats, using[E-notation](https://en.wikipedia.org/wiki/Scientific_notation#E-notation) when necessary:
 
@@ -238,7 +235,7 @@ julia> 2.5e-4
 0.00025
 ```
 
-The above results are all [`Float64`](@ref) values. Literal [`Float32`](@ref) values can be entered by writing an `f` in place of `e`:
+The above results are all [`Float64`](#) values. Literal [`Float32`](#) values can be entered by writing an `f` in place of `e`:
 
 ```
 julia> 0.5f0
@@ -251,7 +248,7 @@ julia> 2.5f-4
 0.00025f0
 ```
 
-Values can be converted to [`Float32`](@ref) easily:
+Values can be converted to [`Float32`](#) easily:
 
 ```
 julia> Float32(-1.5)
@@ -261,7 +258,7 @@ julia> typeof(ans)
 Float32
 ```
 
-Hexadecimal floating-point literals are also valid, but only as [`Float64`](@ref) values, with `p` preceding the base-2 exponent:
+Hexadecimal floating-point literals are also valid, but only as [`Float64`](#) values, with `p` preceding the base-2 exponent:
 
 ```
 julia> 0x1p0
@@ -277,7 +274,7 @@ julia> typeof(ans)
 Float64
 ```
 
-Half-precision floating-point numbers are also supported ([`Float16`](@ref)), but they are implemented in software and use [`Float32`](@ref) for calculations.
+Half-precision floating-point numbers are also supported ([`Float16`](#)), but they are implemented in software and use [`Float32`](#) for calculations.
 
 ```
 julia> sizeof(Float16(4.))
@@ -296,7 +293,7 @@ julia> 10_000, 0.000_000_005, 0xdead_beef, 0b1011_0010
 
 ### Floating-point zero
 
-Floating-point numbers have [two zeros](https://en.wikipedia.org/wiki/Signed_zero), positive zero and negative zero. They are equal to each other but have different binary representations, as can be seen using the [`bitstring`](@ref) function:
+Floating-point numbers have [two zeros](https://en.wikipedia.org/wiki/Signed_zero), positive zero and negative zero. They are equal to each other but have different binary representations, as can be seen using the [`bitstring`](#) function:
 
 ```
 julia> 0.0 == -0.0
@@ -319,7 +316,7 @@ There are three specified standard floating-point values that do not correspond 
 | `-Inf16`  | `-Inf32`  | `-Inf`    | negative infinity | a value less than all finite floating-point values              |
 | `NaN16`   | `NaN32`   | `NaN`     | not a number      | a value not `==` to any floating-point value (including itself) |
 
-For further discussion of how these non-finite floating-point values are ordered with respect to each other and other floats, see [Numeric Comparisons](@ref). By the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008), these floating-point values are the results of certain arithmetic operations:
+For further discussion of how these non-finite floating-point values are ordered with respect to each other and other floats, see [Numeric Comparisons](#). By the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008), these floating-point values are the results of certain arithmetic operations:
 
 ```
 julia> 1/Inf
@@ -359,7 +356,7 @@ julia> 0 * Inf
 NaN
 ```
 
-The [`typemin`](@ref) and [`typemax`](@ref) functions also apply to floating-point types:
+The [`typemin`](#) and [`typemax`](#) functions also apply to floating-point types:
 
 ```
 julia> (typemin(Float16),typemax(Float16))
@@ -376,7 +373,7 @@ julia> (typemin(Float64),typemax(Float64))
 
 Most real numbers cannot be represented exactly with floating-point numbers, and so for many purposes it is important to know the distance between two adjacent representable floating-point numbers, which is often known as [machine epsilon](https://en.wikipedia.org/wiki/Machine_epsilon).
 
-Julia provides [`eps`](@ref), which gives the distance between `1.0` and the next larger representable floating-point value:
+Julia provides [`eps`](#), which gives the distance between `1.0` and the next larger representable floating-point value:
 
 ```
 julia> eps(Float32)
@@ -389,7 +386,7 @@ julia> eps() # same as eps(Float64)
 2.220446049250313e-16
 ```
 
-These values are `2.0^-23` and `2.0^-52` as [`Float32`](@ref) and [`Float64`](@ref) values, respectively. The [`eps`](@ref) function can also take a floating-point value as an argument, and gives the absolute difference between that value and the next representable floating point value. That is, `eps(x)` yields a value of the same type as `x` such that `x + eps(x)` is the next representable floating-point value larger than `x`:
+These values are `2.0^-23` and `2.0^-52` as [`Float32`](#) and [`Float64`](#) values, respectively. The [`eps`](#) function can also take a floating-point value as an argument, and gives the absolute difference between that value and the next representable floating point value. That is, `eps(x)` yields a value of the same type as `x` such that `x + eps(x)` is the next representable floating-point value larger than `x`:
 
 ```
 julia> eps(1.0)
@@ -407,7 +404,7 @@ julia> eps(0.0)
 
 The distance between two adjacent representable floating-point numbers is not constant, but is smaller for smaller values and larger for larger values. In other words, the representable floating-point numbers are densest in the real number line near zero, and grow sparser exponentially as one moves farther away from zero. By definition, `eps(1.0)` is the same as `eps(Float64)` since `1.0` is a 64-bit floating-point value.
 
-Julia also provides the [`nextfloat`](@ref) and [`prevfloat`](@ref) functions which return the next largest or smallest representable floating-point number to the argument respectively:
+Julia also provides the [`nextfloat`](#) and [`prevfloat`](#) functions which return the next largest or smallest representable floating-point number to the argument respectively:
 
 ```
 julia> x = 1.25f0
@@ -435,7 +432,7 @@ This example highlights the general principle that the adjacent representable fl
 
 If a number doesn't have an exact floating-point representation, it must be rounded to an appropriate representable value. However, the manner in which this rounding is done can be changed if required according to the rounding modes presented in the [IEEE 754 standard](https://en.wikipedia.org/wiki/IEEE_754-2008).
 
-The default mode used is always [`RoundNearest`](@ref), which rounds to the nearest representable value, with ties rounded towards the nearest value with an even least significant bit.
+The default mode used is always [`RoundNearest`](#), which rounds to the nearest representable value, with ties rounded towards the nearest value with an even least significant bit.
 
 ### Background and References
 
@@ -449,9 +446,9 @@ Floating-point arithmetic entails many subtleties which can be surprising to use
 
 ## Arbitrary Precision Arithmetic
 
-To allow computations with arbitrary-precision integers and floating point numbers, Julia wraps the [GNU Multiple Precision Arithmetic Library (GMP)](https://gmplib.org) and the [GNU MPFR Library](http://www.mpfr.org), respectively. The [`BigInt`](@ref) and [`BigFloat`](@ref) types are available in Julia for arbitrary precision integer and floating point numbers respectively.
+To allow computations with arbitrary-precision integers and floating point numbers, Julia wraps the [GNU Multiple Precision Arithmetic Library (GMP)](https://gmplib.org) and the [GNU MPFR Library](http://www.mpfr.org), respectively. The [`BigInt`](#) and [`BigFloat`](#) types are available in Julia for arbitrary precision integer and floating point numbers respectively.
 
-Constructors exist to create these types from primitive numerical types, and [`parse`](@ref) can be used to construct them from `AbstractString`s.  Once created, they participate in arithmetic with all other numeric types thanks to Julia's [type promotion and conversion mechanism](@ref conversion-and-promotion):
+Constructors exist to create these types from primitive numerical types, and [`parse`](#) can be used to construct them from `AbstractString`s.  Once created, they participate in arithmetic with all other numeric types thanks to Julia's [type promotion and conversion mechanism](# conversion-and-promotion):
 
 ```
 julia> BigInt(typemax(Int64)) + 1
@@ -470,7 +467,7 @@ julia> factorial(BigInt(40))
 815915283247897734345611269596115894272000000000
 ```
 
-However, type promotion between the primitive types above and [`BigInt`](@ref)/[`BigFloat`](@ref) is not automatic and must be explicitly stated.
+However, type promotion between the primitive types above and [`BigInt`](#)/[`BigFloat`](#) is not automatic and must be explicitly stated.
 
 ```
 julia> x = typemin(Int64)
@@ -492,7 +489,7 @@ julia> typeof(y)
 BigInt
 ```
 
-The default precision (in number of bits of the significand) and rounding mode of [`BigFloat`](@ref) operations can be changed globally by calling [`setprecision`](@ref) and [`setrounding`](@ref), and all further calculations will take these changes in account.  Alternatively, the precision or the rounding can be changed only within the execution of a particular block of code by using the same functions with a `do` block:
+The default precision (in number of bits of the significand) and rounding mode of [`BigFloat`](#) operations can be changed globally by calling [`setprecision`](#) and [`setrounding`](#), and all further calculations will take these changes in account.  Alternatively, the precision or the rounding can be changed only within the execution of a particular block of code by using the same functions with a `do` block:
 
 ```
 julia> setrounding(BigFloat, RoundUp) do
@@ -575,7 +572,7 @@ ERROR: MethodError: objects of type Int64 are not callable
 
 Both expressions are interpreted as function application: any expression that is not a numeric
 literal, when immediately followed by a parenthetical, is interpreted as a function applied to
-the values in parentheses (see [Functions](@ref) for more about functions). Thus, in both of these
+the values in parentheses (see [Functions](#) for more about functions). Thus, in both of these
 cases, an error occurs since the left-hand value is not a function.
 
 The above syntactic enhancements significantly reduce the visual noise incurred when writing common
@@ -613,11 +610,11 @@ type of a given variable.
 
 | Function          | Description                                      |
 |:----------------- |:------------------------------------------------ |
-| [`zero(x)`](@ref) | Literal zero of type `x` or type of variable `x` |
-| [`one(x)`](@ref)  | Literal one of type `x` or type of variable `x`  |
+| [`zero(x)`](#) | Literal zero of type `x` or type of variable `x` |
+| [`one(x)`](#)  | Literal one of type `x` or type of variable `x`  |
 
-These functions are useful in [Numeric Comparisons](@ref) to avoid overhead from unnecessary
-[type conversion](@ref conversion-and-promotion).
+These functions are useful in [Numeric Comparisons](#) to avoid overhead from unnecessary
+[type conversion](# conversion-and-promotion).
 
 Examples:
 
